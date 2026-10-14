@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "davey-crm",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Custom domain (DNS + SSL managed by Cloudflare)
+  "routes": [{ "pattern": "crm.thexdigital.com", "custom_domain": true }],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "davey-crm" }
+  ],
+  // Campaign images & logos. Enable R2 in the Cloudflare dashboard, run
+  //   npx wrangler r2 bucket create davey-crm-media
+  // then uncomment this block and redeploy. Until then the editor uses image URLs.
+  // "r2_buckets": [
+  //   { "binding": "MEDIA", "bucket_name": "davey-crm-media" }
+  // ],
+  "observability": { "enabled": true },
+  // Non-secret config. Secrets (API keys, DATABASE_URL…) go in with:
+  //   npx wrangler secret put NAME     (or the Cloudflare dashboard)
+  "vars": {
+    "NEXT_PUBLIC_APP_NAME": "Davey CRM",
+    // Public URL of the app. Change to your custom domain once it's connected.
+    "APP_URL": "https://crm.thexdigital.com",
+    "BETTER_AUTH_URL": "https://crm.thexdigital.com",
+    // Also allow sign-in on the workers.dev address
+    "TRUSTED_ORIGINS": "https://davey-crm.daveyduarte.workers.dev",
+    "EMAIL_PROVIDER": "resend"
+  }
+}

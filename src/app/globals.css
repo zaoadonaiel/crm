@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* Collapsed admin sidebar (set on <html> before paint, toggled from the sidebar). */
+@custom-variant sb-collapsed (&:where([data-sidebar="collapsed"] *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #fafafa;
+  --border: #ebebee;
+  --foreground: #1c1d21;
+  --muted: #6b6f76;
+  --brand: #f26b4e;
+  --brand-600: #e0553a;
+  --brand-50: #fff1ed;
+  --brand-100: #ffe1d8;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
+}
+
+/* Dark theme: semantic tokens + remapped palette so status tints
+   (bg-red-50, text-green-700, …) automatically read well on dark surfaces. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0d0e11;
+  --surface: #15171c;
+  --surface-2: #1b1e24;
+  --border: #272a31;
+  --foreground: #eceef2;
+  --muted: #979ca6;
+  --brand: #f47a5f;
+  --brand-600: #ff8a70;
+  --brand-50: rgb(244 122 95 / 0.13);
+  --brand-100: rgb(244 122 95 / 0.24);
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+
+  /* hover tints like bg-black/5 become subtle white overlays */
+  --color-black: #ffffff;
+
+  --color-red-50: rgb(239 68 68 / 0.13);
+  --color-red-100: rgb(239 68 68 / 0.2);
+  --color-red-200: rgb(239 68 68 / 0.32);
+  --color-red-600: #f87171;
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+  --color-green-50: rgb(34 197 94 / 0.12);
+  --color-green-100: rgb(34 197 94 / 0.2);
+  --color-green-200: rgb(34 197 94 / 0.3);
+  --color-green-600: #4ade80;
+  --color-green-700: #86efac;
+  --color-green-800: #bbf7d0;
+  --color-amber-50: rgb(245 158 11 / 0.12);
+  --color-amber-100: rgb(245 158 11 / 0.2);
+  --color-amber-200: rgb(245 158 11 / 0.3);
+  --color-amber-300: rgb(245 158 11 / 0.42);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-950: #fef3c7;
+  --color-blue-50: rgb(59 130 246 / 0.13);
+  --color-blue-600: #60a5fa;
+  --color-blue-700: #93c5fd;
+  --color-blue-800: #bfdbfe;
+  --color-purple-50: rgb(168 85 247 / 0.14);
+  --color-purple-200: rgb(168 85 247 / 0.32);
+  --color-purple-600: #c084fc;
+  --color-purple-700: #d8b4fe;
+  --color-purple-800: #e9d5ff;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-600: var(--brand-600);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --font-sans: var(--font-jakarta);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+::selection {
+  background: var(--brand-100);
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--muted) 40%, transparent);
+  border-radius: 999px;
+}
+
+/* Smooth colour change when toggling theme (not on first paint). */
+html.theme-transition,
+html.theme-transition * {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease !important;
 }

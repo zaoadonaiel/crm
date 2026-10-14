@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.pglite
+.open-next
+.wrangler
+.dev.vars
+.trigger
+!.env.example
+.claude/local-test-admin.txt
